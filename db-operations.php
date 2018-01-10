@@ -310,9 +310,88 @@ function deleteParty($id)
 }
 
 
+
+function getOrderCount()
+{
+  include('db-connect.php');
+  $query = "SELECT count(1) id FROM `b2b_order_specific`";
+  $result = mysqli_query($con,$query);
+  $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  $num = $row['id'];
+  return $num;
+}
+
+
+function addOrder($salesman_id,$item_id)
+{
+  $today = date("y.m.d");
+  include('db-connect.php');
+  $query = "INSERT INTO `b2b_order_specific` (`id`, `salesman_id`, `item_id`, `created_on`, `isdeleted`, `isblocked`) VALUES (NULL, '".$salesman_id."', '".$item_id."', '".$today."', 'N', 'N');";
+
+  if (mysqli_query($con,$query)) {
+    return true;
+  } 
+  else {
+    return false;
+  }
+}
+
+
+function getAllOrder()
+{ 
+  include ("db-connect.php");
+  $query = "SELECT b2b_order_specific.id, b2b_order_specific.salesman_id, b2b_order_specific.item_id, b2b_users.name, b2b_item.name, b2b_order_specific.created_on FROM `b2b_order_specific`, `b2b_users`, `b2b_item` WHERE b2b_order_specific.salesman_id = b2b_users.id and b2b_order_specific.item_id = b2b_item.id and b2b_order_specific.isdeleted = 'N'";
+
+  $result = mysqli_query($con,$query);
+  $values = array();
+  $i=0;
+  while($row = mysqli_fetch_array($result)) 
+  {
+    $values[] = $row;
+  }
+  return $values;
+}
+
+function deleteOrder($id)
+{
+  include ("db-connect.php");
+  $query = "UPDATE `b2b_order_specific` SET `isdeleted` = 'Y' WHERE `b2b_order_specific`.`id` = '".$id."'";
+  if (mysqli_query($con,$query)) {
+    return true;
+  } 
+  else {
+    return false;
+  }
+}
+
+
+function getOrderDetails($id){
+  include ("db-connect.php");
+  $query = "SELECT b2b_order_specific.salesman_id, b2b_users.name, b2b_order_specific.item_id ,b2b_item.name FROM `b2b_order_specific`, b2b_users, b2b_item WHERE b2b_order_specific.id = '".$id."'and b2b_order_specific.salesman_id = b2b_users.id and b2b_order_specific.item_id = b2b_item.id";
+  $result = mysqli_query($con,$query);
+  $row = mysqli_fetch_array($result);
+  return $row;
+}
+
+
+function editOrderDetails($id,$salesman_id,$item_id)
+{
+  include ("db-connect.php");
+  $query = "UPDATE `b2b_order_specific` SET `salesman_id` = '".$salesman_id."', `item_id` = '".$item_id."' WHERE `b2b_order_specific`.`id` = '".$id."'";
+
+  if (mysqli_query($con,$query)) {
+    return true;
+  } 
+  else {
+    return false;
+  }
+}
+
+
 // $q = "SELECT * FROM b2b_users WHERE type='admin' AND username='admin' AND password='admin1234'";
 // $result = mysqli_query($con,$q);
 // $value = @mysqli_num_rows($result);
 // echo $value;
+
 
 ?>

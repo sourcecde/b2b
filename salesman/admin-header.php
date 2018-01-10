@@ -89,6 +89,13 @@ $user_type = $_SESSION['user_type'];
                 <li id="all-loans"><a href="all-party.php"><i class="fa fa-list"></i> View All Party</a></li>
               </ul>
             </li>     
+
+              <li id="loans" class="treeview"><a href="#"><i class="fa fa-money"></i><span>  Orders</span><i class="fa fa-angle-right"></i></a>
+              <ul class="treeview-menu">
+                <li id="add-loan"><a href="add-order.php"><i class="fa fa-plus"></i>Add Orders</a></li>
+                <li id="all-loans"><a href="all-order.php"><i class="fa fa-list"></i> View All Orders</a></li>
+              </ul>
+            </li>  
           </ul>
         </section>
       </aside>

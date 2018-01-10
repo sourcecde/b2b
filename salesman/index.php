@@ -53,6 +53,16 @@ $numParty = getPartyCount();
 
             </div>
           </div>
+
+           <div class="col-md-6">
+           <div class="card">
+              <h3 class="card-title"><i class="fa fa-money"></i> Orders</h3>
+              <p>There are <?php echo getOrderCount($id); ?> orders under your name.</p>
+              <p class="mt-40 mb-20"><a class="btn btn-primary icon-btn mr-10" href="add-order.php" ><i class="fa fa-plus"></i> Add Order</a><a class="btn btn-info icon-btn mr-10" href="all-order.php" ><i class="fa fa-list"></i> View All Orders</a></p>
+            </div>
+          </div>
+
+          
         </div>
       </div>
     </div>
