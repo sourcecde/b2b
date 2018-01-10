@@ -34,7 +34,7 @@ function delete_id(id)
                   <thead>
                     <tr>
                       <th>Salesman Name</th>
-                      <th>Item Name</th>
+                      <th>Party Name</th>
                       <th>Date</th>                      
                       <th></th>
                     </tr>

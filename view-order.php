@@ -20,8 +20,8 @@ if($_GET['id']!='')
 
     $salesman_id=$order[0];
     $salesman_name=$order[1];
-    $item_id=$order[2];
-    $item_name=$order[3];
+    $party_id=$order[2];
+    $party_name=$order[3];
 }
 
 ?>
@@ -67,9 +67,9 @@ if($_GET['id']!='')
 
 
                         <div class="form-group">
-                          <label class=" control-label" for="item">Item:</label>
-                          <select class="form-control" id="item" name="item_id" placeholder="Select Item" readonly>
-                            <option value="<?php echo $item_id; ?>"><?php echo $item_name; ?></option>
+                          <label class=" control-label" for="party">Party:</label>
+                          <select class="form-control" id="party" name="party_id" placeholder="Select Party" readonly>
+                            <option value="<?php echo $party_id; ?>"><?php echo $party_name; ?></option>
                           </select>
                         </div>
 

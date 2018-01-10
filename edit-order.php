@@ -20,8 +20,8 @@ if($_GET['id']!='')
 
     $salesman_id=$order[0];
     $salesman_name=$order[1];
-    $item_id=$order[2];
-    $item_name=$order[3];
+    $party_id=$order[2];
+    $party_name=$order[3];
 }
 
 
@@ -31,16 +31,16 @@ if($_GET['id']!='')
 
 
 if(isset($_POST['salesman_id']) && $_POST['salesman_id'] != "" &&
-  isset($_POST['item_id']) && $_POST['item_id'] != ""
+  isset($_POST['party_id']) && $_POST['party_id'] != ""
   ){
 
   $id=@$_POST["id"];
 
   $salesman_id = @$_POST['salesman_id'];
-  $item_id = @$_POST['item_id'];
+  $party_id = @$_POST['party_id'];
 
 
-  $message = editOrderDetails($id,$salesman_id,$item_id);
+  $message = editOrderDetails($id,$salesman_id,$party_id);
 
   if($message){
     $message="<strong>SUCCESS!</strong> Party added to the system!";
@@ -99,9 +99,9 @@ if(isset($_POST['salesman_id']) && $_POST['salesman_id'] != "" &&
 
 
                         <div class="form-group">
-                          <label class=" control-label" for="item">Item:</label>
-                          <select class="form-control" id="item" name="item_id" placeholder="Select Item">
-                            <option value="<?php echo $item_id; ?>"><?php echo $item_name; ?></option>
+                          <label class=" control-label" for="party">Party:</label>
+                          <select class="form-control" id="party" name="party_id" placeholder="Select Party">
+                            <option value="<?php echo $party_id; ?>"><?php echo $party_name; ?></option>
                             <?php
                             $items = getAllParty();
                               for ($i=0;$i<count($items);$i++){
