@@ -73,11 +73,11 @@ if(isset($salesman_id) && $salesman_id != "" && isset($item_id) && $item_id != "
                         <div class="form-group">
                           <label class=" control-label" for="item">Item:</label>
                           <select class="form-control" id="item" name="item_id" placeholder="Select Item">
-                            <option value="">Select Item</option>
+                            <option value="">Select Party</option>
                             <?php
-                            $items = getItems();
-                              for ($i=0;$i<count($items);$i++){
-                                echo " <option value='" . $items[$i]['id'] . "'>" .  $items[$i]['name'] . "</option>";
+                            $party = getAllParty();
+                              for ($i=0;$i<count($party);$i++){
+                                echo " <option value='" . $party[$i]['id'] . "'>" .  $party[$i]['name'] . "</option>";
                               }
                             ?>
 

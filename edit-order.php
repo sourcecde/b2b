@@ -103,7 +103,7 @@ if(isset($_POST['salesman_id']) && $_POST['salesman_id'] != "" &&
                           <select class="form-control" id="item" name="item_id" placeholder="Select Item">
                             <option value="<?php echo $item_id; ?>"><?php echo $item_name; ?></option>
                             <?php
-                            $items = getItems();
+                            $items = getAllParty();
                               for ($i=0;$i<count($items);$i++){
                                 echo " <option value='" . $items[$i]['id'] . "'>" .  $items[$i]['name'] . "</option>";
                               }

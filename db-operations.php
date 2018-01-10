@@ -326,7 +326,7 @@ function addOrder($salesman_id,$item_id)
 {
   $today = date("y.m.d");
   include('db-connect.php');
-  $query = "INSERT INTO `b2b_order_specific` (`id`, `salesman_id`, `item_id`, `created_on`, `isdeleted`, `isblocked`) VALUES (NULL, '".$salesman_id."', '".$item_id."', '".$today."', 'N', 'N');";
+  $query = "INSERT INTO `b2b_order_specific` (`id`, `salesman_id`, `party_id`, `created_on`, `isdeleted`, `isblocked`) VALUES (NULL, '".$salesman_id."', '".$item_id."', '".$today."', 'N', 'N');";
 
   if (mysqli_query($con,$query)) {
     return true;
@@ -340,7 +340,7 @@ function addOrder($salesman_id,$item_id)
 function getAllOrder()
 { 
   include ("db-connect.php");
-  $query = "SELECT b2b_order_specific.id, b2b_order_specific.salesman_id, b2b_order_specific.item_id, b2b_users.name, b2b_item.name, b2b_order_specific.created_on FROM `b2b_order_specific`, `b2b_users`, `b2b_item` WHERE b2b_order_specific.salesman_id = b2b_users.id and b2b_order_specific.item_id = b2b_item.id and b2b_order_specific.isdeleted = 'N'";
+  $query = "SELECT b2b_order_specific.id, b2b_order_specific.salesman_id, b2b_order_specific.party_id, b2b_users.name, b2b_party.name, b2b_order_specific.created_on FROM `b2b_order_specific`, `b2b_users`, `b2b_party` WHERE b2b_order_specific.salesman_id = b2b_users.id and b2b_order_specific.party_id = b2b_party.id and b2b_order_specific.isdeleted = 'N'";
 
   $result = mysqli_query($con,$query);
   $values = array();
@@ -367,7 +367,7 @@ function deleteOrder($id)
 
 function getOrderDetails($id){
   include ("db-connect.php");
-  $query = "SELECT b2b_order_specific.salesman_id, b2b_users.name, b2b_order_specific.item_id ,b2b_item.name FROM `b2b_order_specific`, b2b_users, b2b_item WHERE b2b_order_specific.id = '".$id."'and b2b_order_specific.salesman_id = b2b_users.id and b2b_order_specific.item_id = b2b_item.id";
+  $query = "SELECT b2b_order_specific.salesman_id, b2b_users.name, b2b_order_specific.party_id ,b2b_party.name FROM `b2b_order_specific`, b2b_users, b2b_party WHERE b2b_order_specific.id = '".$id."'and b2b_order_specific.salesman_id = b2b_users.id and b2b_order_specific.party_id = b2b_party.id";
   $result = mysqli_query($con,$query);
   $row = mysqli_fetch_array($result);
   return $row;
@@ -377,7 +377,7 @@ function getOrderDetails($id){
 function editOrderDetails($id,$salesman_id,$item_id)
 {
   include ("db-connect.php");
-  $query = "UPDATE `b2b_order_specific` SET `salesman_id` = '".$salesman_id."', `item_id` = '".$item_id."' WHERE `b2b_order_specific`.`id` = '".$id."'";
+  $query = "UPDATE `b2b_order_specific` SET `salesman_id` = '".$salesman_id."', `party_id` = '".$item_id."' WHERE `b2b_order_specific`.`id` = '".$id."'";
 
   if (mysqli_query($con,$query)) {
     return true;
