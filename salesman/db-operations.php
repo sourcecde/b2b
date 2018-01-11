@@ -399,4 +399,28 @@ function getAllOrderForSalesman($id)
 }
 
 
+
+function search($key,$category)
+{ 
+  include ("db-connect.php");
+  if ($category == '' || $category == 'all'){
+    $query = "SELECT id, name FROM `b2b_item` WHERE name LIKE '%".$key."%'";
+  }else{
+    $query = "SELECT id, name FROM `b2b_item` WHERE name LIKE '%".$key."%' AND category = '".$category."'";
+  }
+  $result = mysqli_query($con,$query);
+  // $numrows = mysqli_num_rows($result);
+  // if($numrows){
+  //   return 0;
+  // }
+  $values = array();
+  $i=0;
+  while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) 
+  {
+    $values[] = $row;
+  }
+  return $values;
+}
+
+
 ?>

@@ -1,70 +1,29 @@
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script src="bootstrap3-typeahead.js"></script>
-    <script src="typeahead.min.js"></script>
-    <script>
-    $(document).ready(function(){
-     
-    $('input.typeahead').typeahead({
-
-        name: 'typeahead',
-        remote:'search.php?key=%QUERY',
-        limit : 10
+<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script>
+$(document).ready(function(){
+  $("#search-box").keyup(function(){
+    $.ajax({
+    type: "POST",
+    url: "readCountry.php",
+    data:'keyword='+$(this).val(),
+    beforeSend: function(){
+      $("#search-box").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
+    },
+    success: function(data){
+      $("#suggesstion-box").show();
+      $("#suggesstion-box").html(data);
+      $("#search-box").css("background","#FFF");
+    }
     });
+  });
 });
-    </script>
-<style type="text/css">
-.bs-example{
-  font-family: sans-serif;
-  position: relative;
-  margin: 50px;
+
+function selectCountry(val) {
+$("#search-box").val(val);
+$("#suggesstion-box").hide();
 }
-.typeahead, .tt-query, .tt-hint {
-  border: 2px solid #CCCCCC;
-  border-radius: 8px;
-  font-size: 24px;
-  height: 30px;
-  line-height: 30px;
-  outline: medium none;
-  padding: 8px 12px;
-  width: 396px;
-}
-.typeahead {
-  background-color: #FFFFFF;
-}
-.typeahead:focus {
-  border: 2px solid #0097CF;
-}
-.tt-query {
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-}
-.tt-hint {
-  color: #999999;
-}
-.tt-dropdown-menu {
-  background-color: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  margin-top: 12px;
-  padding: 8px 0;
-  width: 422px;
-}
-.tt-suggestion {
-  font-size: 24px;
-  line-height: 24px;
-  padding: 3px 20px;
-}
-.tt-suggestion.tt-is-under-cursor {
-  background-color: #0097CF;
-  color: #FFFFFF;
-}
-.tt-suggestion p {
-  margin: 0;
-}
-</style>
+</script>
+
 
 <?php 
 include 'admin-header.php';
@@ -88,6 +47,7 @@ $item_id = @$_POST['item_id'];
 
 
 if(isset($item_id) && $item_id != ""){
+
   $message = addOrder($id,$item_id);
 
   if($message){
@@ -99,6 +59,17 @@ if(isset($item_id) && $item_id != ""){
 }
 
 ?>
+<?php
+  if (isset($_GET['search_button']) && $_GET['search_button'] !=  ""){
+    $search_key = $_GET['search_key'];
+    $search_category = $_GET['search_category'];
+
+    $search_values = search($search_key,$search_category);
+
+  }
+?>
+
+
 
       <div class="content-wrapper">
         <div class="page-title">
@@ -125,7 +96,7 @@ if(isset($item_id) && $item_id != ""){
                         </div>
 
                
-                   <form id="addBorrowerForm"  role="form" method="post" action="add-order.php">
+                   <form id="orderFrom"  role="form" method="post" action="add-order.php">
 
                         <div class="form-group">
                           <label class=" control-label" for="salesman">Salesman:</label>
@@ -154,26 +125,19 @@ if(isset($item_id) && $item_id != ""){
                         <div class="form-group">
                           <table class="table table-hover table-bordered" id="sampleTable">
                             <tbody>
+                              <?php for ($i=0;$i<3;$i++) {?>
                               <tr>
-                                <td>One</td>
+                                <td>
+
+                                  <input type="text" hidden="true" id="order_item_id" name="order_item_id[]" value="<?php echo $i; ?>"/>
+
+                                  <input type="text" class="form-control" id="order_item_name" name="order_item_name[]" value="<?php echo 'Item name'; ?>" readonly></td>
+
                                 <td>
                                   <input type="text" class="form-control"  value="1">
                                 </td>
                               </tr>
-                              <tr>
-                                <td>Two</td>
-                                <td>
-                                  <input type="text" class="form-control"  value="1">
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  Three
-                                </td>
-                                <td>
-                                  <input type="text" class="form-control"  value="1">
-                                </td>
-                              </tr>
+                              <?php } ?>
                             </tbody>
                           </table>
                         </div>
@@ -183,7 +147,7 @@ if(isset($item_id) && $item_id != ""){
                <div class="card-footer">
                 <div class="row">
                   <div class="col-md-8 col-md-offset-0">
-                    <button class="btn btn-primary icon-btn" onclick="document.getElementById('addBorrowerForm').submit();" type="button"><i class="fa fa-fw fa-lg fa-check-circle"></i>Order</button>&nbsp;&nbsp;&nbsp;<a class="btn btn-default icon-btn" href="#"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+                    <button class="btn btn-primary icon-btn" onclick="document.getElementById('orderFrom').submit();" type="button"><i class="fa fa-fw fa-lg fa-check-circle"></i>Order</button>&nbsp;&nbsp;&nbsp;<a class="btn btn-default icon-btn" href="#"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
                   </div>
                 </div>
               </div>
@@ -199,58 +163,55 @@ if(isset($item_id) && $item_id != ""){
             <h3 class="card-title">Search Items</h3>
               <div class="card-body">
                
-                   <form id=""  role="form" method="post" >
+                   <form id=""  role="form" method="GET" action="">
 
                         <div class="form-group ">
-                            <input type="text" class="form-control typeahead tt-query" id="name" name="typeahead" placeholder="Search">
+                            <input type="text" class="form-control" id="search-box" name="search_key" placeholder="Search" autocomplete="off">
+                            <div id="suggesstion-box"></div>
                         </div> 
+
 
 
                         <div class="form-group">
                           <label class=" control-label" for="category">Category:</label>
-                          <select class="form-control" id="category" name="category" placeholder="select Category">
+                          <select class="form-control" id="category" name="search_category" placeholder="select Category">
                             <option value="">Select Category</option>
+                            <option value="all">All</option>
                             <option value="option1">Option 1</option>
                             <option value="option2">Option 2</option>
                             <option value="option3">Option 3</option>
                           </select>
                         </div>
 
-
+                        <input type="submit" name="search_button" class="btn btn-primary icon-btn" value="Search">
                   </form>
                </div>
 
-               <div class="card-footer">
+               
+
+               <!-- <div class="card-footer">
                 <div class="row">
                   <div class="col-md-8 col-md-offset-0">
                     <button class="btn btn-primary icon-btn" onclick="document.getElementById('addBorrowerForm').submit();" type="button">Search</button>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
               <hr>
                <table class="table table-hover table-bordered" id="sampleTable">
                   <tbody>
+
+                    <?php if(isset($search_values) && $search_values!=0){?>
+                    <?php for ($i=0;$i<count($search_values);$i++) {?>
                     <tr>
-                      <td>One</td>
+                      <td><?php echo $search_values[$i]['name']; ?></td>
                       <td>
                         <button class="btn btn-primary col-md-offset-9" onclick="document.getElementById('addBorrowerForm').submit();" type="button">Add</button>
                       </td>
                     </tr>
-                    <tr>
-                      <td>Two</td>
-                      <td>
-                        <button class="btn btn-primary col-md-offset-9" onclick="document.getElementById('addBorrowerForm').submit();" type="button">Add</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        Three
-                      </td>
-                      <td>
-                        <button class="btn btn-primary col-md-offset-9" onclick="document.getElementById('addBorrowerForm').submit();" type="button">Add</button>
-                      </td>
-                    </tr>
+                    <?php }} ?>
+                      <!-- Ohh, Sorry! No Result Found!!! -->
+                   
                   </tbody>
                 </table>
 
@@ -270,3 +231,7 @@ if(isset($item_id) && $item_id != ""){
 <?php 
 include 'admin-footer.php';
 ?>
+
+
+
+
