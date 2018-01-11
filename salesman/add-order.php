@@ -206,7 +206,7 @@ if(isset($item_id) && $item_id != ""){
                     <tr>
                       <td><?php echo $search_values[$i]['name']; ?></td>
                       <td>
-                        <button class="btn btn-primary col-md-offset-9" onclick="document.getElementById('addBorrowerForm').submit();" type="button">Add</button>
+                        <button class="btn btn-primary col-md-offset-9" id="itemAdd" type="button" onclick="return itemAdd('<?php echo $search_values[$i]['id']; ?>');">Add</button>
                       </td>
                     </tr>
                     <?php }} ?>
@@ -232,6 +232,11 @@ if(isset($item_id) && $item_id != ""){
 include 'admin-footer.php';
 ?>
 
-
+<script type="text/javascript">
+function itemAdd(id)
+{
+	alert(id);
+}
+</script>
 
 

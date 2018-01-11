@@ -14,3 +14,9 @@ foreach($result as $item) {
 <?php } ?>
 </div>
 <?php } } ?>
+<?php 
+if(!empty($_POST["id"])) {
+
+	echo "mimiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii";exit;
+}
+?>
