@@ -92,7 +92,7 @@ if($name!="" && $quantity != "" && $category != "" && $description != "" && $ima
                         </div>
 
                          <div class="form-group">
-                          <label class=" control-label" for="image">Item Image:</label>
+                          <label class=" control-label" for="image">Image:</label>
                           
                             <input type="file" class="form-control" id="image" name="image" placeholder="Select Image">
                           
